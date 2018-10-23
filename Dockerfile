@@ -1,11 +1,13 @@
 FROM golang:1.11.1-alpine
 
-WORKDIR src/
-COPY ./src .
+WORKDIR /go/app
+COPY ./app .
 
 RUN apk update && \
     apk upgrade -U -a && \
     apk add git
 
-RUN go get github.com/gorilla/mux
+
+RUN export GOPATH=$PWD
+RUN go get -d -v ./...
 CMD ["go","run","main.go"]
