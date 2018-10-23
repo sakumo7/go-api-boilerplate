@@ -2,6 +2,7 @@ package models
 
 import (
 	"time"
+	"errors"
 	"../config"
 )
 
@@ -25,4 +26,40 @@ func (u *User) FetchAll() []User {
 	db.Find(&users)
 
 	return users
+}
+
+func (u *User) FetchById() error {
+	db := config.GetDatabaseConnection()
+
+	if err := db.Where("id = ?", u.ID).Find(&u).Error; err != nil {
+		return errors.New("Could not find the user")
+	}
+
+	return nil
+}
+
+func (u *User) Save() error {
+	db := config.GetDatabaseConnection()
+
+	if db.NewRecord(u) {
+		if err := db.Create(&u).Error; err != nil {
+			return errors.New("Could not create user")
+		}
+	} else {
+		if err := db.Save(&u).Error; err != nil {
+			return errors.New("Could not update user")
+		}
+	}
+
+	return nil
+}
+
+func (u *User) Delete() error {
+	db := config.GetDatabaseConnection()
+
+	if err := db.Delete(&u).Error; err != nil {
+		return errors.New("Could not find the user")
+	}
+
+	return nil
 }
