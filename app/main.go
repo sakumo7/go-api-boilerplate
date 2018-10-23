@@ -22,13 +22,7 @@ func main() {
 	defer db.Close()
 	logrus.Info("Version is ", "1.0")
 	logrus.Info("Starting Server on http://localhost:8000")
-	migrateDatabase()
+	models.ExecuteMigrations()
 	server := server.NewServer()
 	log.Fatal(http.ListenAndServe(":8000", server))
-}
-
-func migrateDatabase() {
-	db := config.GetDatabaseConnection()
-	db.AutoMigrate(&models.User{})
-
 }
