@@ -1,14 +1,26 @@
-db:
-  restart: always
-  image: postgres
-  ports:
-    - "5432:5432"
-  environment:
-    POSTGRES_PASSWORD: example
-    POSTGRES_USER: example
-    POSTGRES_DB: example
-  volumes:
-    - ./postgresql:/var/lib/postgresql
-app:
-  build: .
+version: '2'
+services:
+  db:
+    restart: always
+    image: postgres
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+      PGDATA: /data/postgres
+    volumes:
+       - ./postgres:/data/postgres
+    ports:
+      - "5432:5432"
+  app:
+    build: .
+    volumes:
+      - ./app:/go/app
+    environment:
+      DB_HOST: db
+      DB_USER: app
+      DB_PORT: 5432
+      DB_PASSWORD: app
+      DB_NAME: app
+    depends_on:
+      - db
   

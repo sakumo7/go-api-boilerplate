@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/sirupsen/logrus"
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 var gormConn *gorm.DB
@@ -15,18 +16,24 @@ func get_connection() string {
 	port := os.Getenv("DB_PORT")
 	password := os.Getenv("DB_PASSWORD")
 	name := os.Getenv("DB_NAME")
-	response := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", user, password, host, port, name)
+	ssl := os.Getenv("SSL")
+	response := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s", host, port, user, name, password)
+	if ssl == ""{
+		response = response+" sslmode=disable"	
+	}
 	return response
-	//return "user:password@tcp(localhost:3306)/database_name"
 }
 
 func GetDatabaseConnection() *gorm.DB {
+	connection_string := get_connection()
+	fmt.Println(connection_string)
 	if gormConn != nil && gormConn.DB() != nil && gormConn.DB().Ping() == nil {
 		return gormConn
 	}
 
-	conn, err := gorm.Open(os.Getenv("DB_DIALECT"), os.Getenv("DB_CONNECTION"))
+	conn, err := gorm.Open("postgres", connection_string)
 	if err != nil {
+		fmt.Println(err)
 		logrus.Fatal("Could not connect to the database")
 	}
 
