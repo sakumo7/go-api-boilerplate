@@ -11,6 +11,7 @@ func NewRouter() *mux.Router {
 	mainRouter := mux.NewRouter().StrictSlash(true)
 	mainRouter.KeepContext = true
 	mainRouter.Methods("GET").Path("/api/info").HandlerFunc(handlers.GetAPIInfo)
+	//mainRouter.Methods("GET").Path("/api/users").HandlerFunc(handlers.GetAllUsersHandler)
 	mainRouter.Methods("GET").Path("/api/users").HandlerFunc(handlers.CreateGetAllHandler(&models.User{}))
 	mainRouter.Methods("POST").Path("/api/users").HandlerFunc(handlers.CreateUserHandler)
 	mainRouter.Methods("GET").Path("/api/users/{id}").HandlerFunc(handlers.GetUserByIdHandler)

@@ -23,10 +23,16 @@ func (User) TableName() string {
 
 func (u *User) FetchAll() []map[string]interface{} {
 	db := config.GetDatabaseConnection()
-	var users []map[string]interface{}
-	db.Find(&users)
 
-	return users
+	var users []User
+	db.Find(&users)
+	var usersMap []map[string]interface{}
+
+	for index := range users {
+		usersMap = append(usersMap, users[index].ConvertToMap())
+	}
+
+	return usersMap
 }
 
 func (u *User) FetchById() error {
