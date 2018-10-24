@@ -1,9 +1,9 @@
 package handlers
 
 import (
+	"../core"
 	"net/http"
 	"os"
-	"../core"
 )
 
 type APIInfo struct {

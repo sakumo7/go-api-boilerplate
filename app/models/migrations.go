@@ -1,10 +1,10 @@
 package models
 
 import (
-	"../config"
+	"../core/database"
 )
 
 func ExecuteMigrations(){
-	db := config.GetDatabaseConnection()
+	db := database.GetDatabaseConnection()
 	db.AutoMigrate(&User{})
 }

@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"net/http"
 	"../core"
 	"../models"
+	"net/http"
 )
 
 func GetAllUsersHandler(w http.ResponseWriter, req *http.Request) {

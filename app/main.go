@@ -5,13 +5,13 @@ import (
 	"net/http"
 	"os"
 	"github.com/sirupsen/logrus"
-	"./config"
+	"./settings"
 	"./models"
 	"./server"
 )
 
 func main() {
-	db := config.GetDatabaseConnection()
+	db := settings.GetDatabaseConnection()
 	port := os.Getenv("APP_PORT")
 	
 	defer db.Close()

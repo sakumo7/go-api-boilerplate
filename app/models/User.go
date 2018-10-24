@@ -3,7 +3,7 @@ package models
 import (
 	"time"
 	"errors"
-	"../config"
+	"../core/database"
 )
 
 type User struct {
@@ -14,6 +14,9 @@ type User struct {
 	FirstName string `json:"firstname, omitempty" gorm:"not null; type:varchar(100)"`
 	LastName  string `json:"lastname, omitempty" gorm:"not null; type:varchar(100)"`
 	Email     string `json:"email, omitempty" gorm:"not null; type:varchar(100)"`
+	UUID     string `json:"uuid" form:"-"`
+	Username string `json:"username" form:"username"`
+	Password string `json:"password" form:"password"`
 }
 
 func (User) TableName() string {
@@ -21,7 +24,7 @@ func (User) TableName() string {
 }
 
 func (u *User) FetchAll() []User {
-	db := config.GetDatabaseConnection()
+	db := database.GetDatabaseConnection()
 	var users []User
 	db.Find(&users)
 
@@ -29,7 +32,7 @@ func (u *User) FetchAll() []User {
 }
 
 func (u *User) FetchById() error {
-	db := config.GetDatabaseConnection()
+	db := database.GetDatabaseConnection()
 
 	if err := db.Where("id = ?", u.ID).Find(&u).Error; err != nil {
 		return errors.New("Could not find the user")
@@ -39,7 +42,7 @@ func (u *User) FetchById() error {
 }
 
 func (u *User) Save() error {
-	db := config.GetDatabaseConnection()
+	db := database.GetDatabaseConnection()
 
 	if db.NewRecord(u) {
 		if err := db.Create(&u).Error; err != nil {
@@ -55,7 +58,7 @@ func (u *User) Save() error {
 }
 
 func (u *User) Delete() error {
-	db := config.GetDatabaseConnection()
+	db := database.GetDatabaseConnection()
 
 	if err := db.Delete(&u).Error; err != nil {
 		return errors.New("Could not find the user")
