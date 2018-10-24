@@ -9,19 +9,16 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// Request ...
 type Request struct {
 	Request        *http.Request
 	ResponseWriter http.ResponseWriter
 }
 
-// GetJSONBody ...
 func (r *Request) GetJSONBody(model interface{}) {
 	decoder := json.NewDecoder(r.Request.Body)
 	decoder.Decode(&model)
 }
 
-// GetVarID ...
 func (r *Request) GetVarID() (int, error) {
 	vars := mux.Vars(r.Request)
 	id, err := strconv.Atoi(vars["id"])

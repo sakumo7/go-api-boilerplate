@@ -6,10 +6,10 @@ import (
 	//"os"
 
 	//"github.com/joho/godotenv"
-	"github.com/sirupsen/logrus"
 	"./config"
 	"./models"
 	"./server"
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
@@ -17,7 +17,7 @@ func main() {
 	//if err != nil {
 	//	logrus.Fatal("Error loading .env file")
 	//}
-	
+
 	db := config.GetDatabaseConnection()
 	defer db.Close()
 	logrus.Info("Version is ", "1.0")

@@ -4,7 +4,7 @@ import (
 	"../config"
 )
 
-func ExecuteMigrations(){
+func ExecuteMigrations() {
 	db := config.GetDatabaseConnection()
 	db.AutoMigrate(&User{})
 }
